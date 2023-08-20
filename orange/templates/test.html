@@ -1,0 +1,91 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>NSD Form</title>
+    <link href="{% static 'vendor/mdi-font/css/material-design-iconic-font.min.css' %}" rel="stylesheet" media="all">
+    <link href="{% static 'vendor/font-awesome-4.7/css/font-awesome.min.css' %}" rel="stylesheet" media="all">
+    <link href="{% static 'vendor/select2/select2.min.css' %}" rel="stylesheet" media="all">
+    <link href="{% static 'vendor/datepicker/daterangepicker.css' %}" rel="stylesheet" media="all">
+    <link href="{% static 'css/main.css' %}" rel="stylesheet" media="all">
+</head>
+<body>
+        <div class="page-wrapper bg-gra-02 p-t-130 p-b-100 font-poppins">
+        <div class="wrapper wrapper--w780">
+            <div class="card card-4">
+                <div class="card-body">
+                    <h2 class="title">NSD</h2>
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="row row-space">
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <label for="nsdName">Name:</label>
+                                    <input class="input--style-4" type="text" name="nsdName"><br><br>
+                                    <label for="nsdVersion">Version:</label>
+                                    <input class="input--style-4" type="text" name="nsdVersion"><br><br>
+                                    <label for="nsdDescription">Description:</label>
+                                    <input class="input--style-4" type="text" name="nsdDescription"><br><br>
+                                    
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="input-group">
+                                        <label for="softwareMin">Software Min:</label>
+                                        <input class="input--style-4" type="text" name="softwareMin"><br><br>
+                                        <label>Hardware:</label>
+                                    <input class="input--style-4" type="text" name="hardware"><br><br>
+                                </div>
+                            </div>
+                        </div>
+                        <h2 class="title">General</h2>            
+                        <div class="row row-space">
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <div class="input-group-icon">
+                                    </div>
+                                </div>
+                            </div>
+                        <div class="row row-space">
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <label for="generalID">ID:</label>
+                                    <input class="input--style-4" type="text" name="generalID"><br><br>
+                                    <label for="generalDescription">Description:</label>
+                                    <input class="input--style-4" type="text" name="generalDescription"><br><br>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <label for="openvswitchPmdCpuMask">PMD CPU Mask:</label>
+                                    <input class="input--style-4" type="text" name="openvswitchPmdCpuMask"><br>
+                                </div>
+                            </div>
+                        </div>
+                            
+                        </div>
+                        <div class="p-t-15"><h2 class="title">VNF</h2>            
+                            <div class="row row-space">
+                                <div class="col-2">
+                                    <div class="input-group">
+                                        <label for="num">Number of VNFs:</label>
+                                        <input class="input--style-4" type="text" name="num">
+                                        <a class="btn btn--radius-2 btn--blue">Generate</a>
+                                    </div>
+                                </div>
+                            
+                            <input class="btn btn--radius-2 btn--blue" type="submit" value="Submit">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    </form>
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'vendor/select2/select2.min.js' %}"></script>
+    <script src="{% static 'vendor/datepicker/moment.min.js' %}"></script>
+    <script src="{% static 'vendor/datepicker/daterangepicker.js' %}"></script>
+    <script src="{% static 'js/global.js' %}"></script>    
+</body>
+</html>
