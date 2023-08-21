@@ -70,10 +70,18 @@
                                     <div class="input-group">
                                         <label for="num">Number of VNFs:</label>
                                         <input class="input--style-4" type="text" name="num">
-                                        <a class="btn btn--radius-2 btn--blue">Generate</a>
+                                        <a class="btn btn--radius-2 btn--blue" href="{% url 'generateSubForms' %}">Generate</a>
                                     </div>
                                 </div>
-                            
+                                <div id="subform-container">
+                                    <!-- The generated subforms will be placed here -->
+                                    {% for i in range(num) %}
+                                    <div class="subform">
+                                        <label for="subform-field-{{ i }}">Subform Field {{ i }}:</label>
+                                        <input class="input--style-4" type="text" name="subform-field-{{ i }}">
+                                    </div>
+                                    {% endfor %}
+                                </div> 
                             <input class="btn btn--radius-2 btn--blue" type="submit" value="Submit">
                         </div>
                     </form>
@@ -88,4 +96,29 @@
     <script src="{% static 'vendor/datepicker/daterangepicker.js' %}"></script>
     <script src="{% static 'js/global.js' %}"></script>    
 </body>
+<script>
+    $(document).ready(function() {
+        $("#generateButton").click(function() {
+            var num = parseInt($("#num").val());
+            var subformContainer = $("#subformContainer");
+
+            subformContainer.empty();
+            for (var i = 0; i < num; i++) {
+                var subform = `
+                    <div class="subform">
+                        <label for="subform-field-${i}">Subform Field ${i}:</label>
+                        <input class="input--style-4" type="text" name="subform-field-${i}">
+                    </div>
+                `;
+                subformContainer.append(subform);
+            }
+        });
+    });
+</script>
 </html>
+
+
+
+
+
+

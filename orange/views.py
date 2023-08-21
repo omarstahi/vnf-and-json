@@ -2,9 +2,6 @@ from django.shortcuts import render
 from django.http import HttpResponse
 import json, os
 
-# Create your views here.
-
-
 def test(request):
     with open("orange/static/Fichier_Conf_1.json","r") as file:
         data = json.load(file)
@@ -38,4 +35,7 @@ def test(request):
 
 
 def generateSubForms(request):
-    return render(request,"test.html")
+    if request.method == 'POST':
+        num = int(request.POST.get('num'))
+        test = [1,2,3]
+    return render(request,"test.html",{"num":num})
