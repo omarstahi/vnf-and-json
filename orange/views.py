@@ -3,30 +3,53 @@ from django.http import HttpResponse
 import json
 
 def test(request):
-    with open("orange/static/Fichier_Conf_1.json","r") as file:
-        data = json.load(file)
-    if request.method == 'POST':
+    num = request.POST.get('num')
+    
+    if num == '1':
+        json_filename = "Fichier_Conf_1.json"
+    elif num == '2':
+        json_filename = "Fichier_Conf_1.json"
+    elif num == '3':
+        json_filename = "Fichier_Conf_3.json"
+    elif num == '4':
+        json_filename = "Fichier_Conf_4.json"
+    elif num == '5':
+        json_filename = "Fichier_Conf_5.json"
+    else:
+        # Handle other cases or raise an error
+        json_filename = None
+    
+    if request.method == 'POST' and 'sub' in request.POST and json_filename:
         version = request.POST.get('version')
         name = request.POST.get('nsdName')
         nsdversion = request.POST.get('nsdVersion')
         nsddesc = request.POST.get('nsdDescription')
         softwaremin = request.POST.get('softwareMin')
         
-        with open("orange/static/Fichier_Conf_1.json","w") as file:
+        with open(f"orange/static/{json_filename}", "r") as file:
+            data = json.load(file)
+            for i in range(int(num)):
+                vnfname = request.POST.get('name'+str(i))
+                data['objects'][i+1]['name']['value'] = vnfname
             data['version'] = version
             data['nsd']['properties']['name'] = name
             data['nsd']['version'] = nsdversion
             data['nsd']['properties']['description'] = nsddesc
             data['nsd']['properties']['software_min'] = softwaremin
-            data['general']['id']['value'] = name+"_3int"
+            data['general']['id']['value'] = name + "_3int"
+        
+        with open(f"orange/static/{json_filename}", "w") as file:
             json.dump(data, file, indent=4)
-            
+        
         response = HttpResponse(content_type="application/octet-stream")
-        response['Content-Disposition'] = 'attachment; filename="result.json"'
-        with open("orange/static/Fichier_Conf_1.json", "rb") as f:
+        response['Content-Disposition'] = f'attachment; filename="{json_filename}"'
+        
+        with open(f"orange/static/{json_filename}", "rb") as f:
             response.write(f.read())
+        
         return response
-    return render(request,"test.html")
+    
+    return render(request, "test.html")
 
 
 def vnfconfig(request):
@@ -45,7 +68,6 @@ def vnfconfig(request):
             data['nsd']['version'] = nsdversion
             data['nsd']['properties']['description'] = nsddesc
             data['nsd']['properties']['software_min'] = softwaremin
-            data['general']['id']['value'] = name+"_3int"
     return render(request,"test.html")
 
 '''

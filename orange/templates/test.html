@@ -1,4 +1,4 @@
-{% load static %}
+.{% load static %}
 <!DOCTYPE html>
 <html>
 
@@ -39,46 +39,44 @@
                                 </div>
                             </div>
                         </div>
-                    
-                        <input class="btn btn--radius-2 btn--blue" type="submit" value="Submit">
+                        
+                            <div class="row row-space">
+                                <div class="col-2">
+                                    <div class="input-group">
+                                        <label for="num">Number of VNFs:</label>
+                                        <input class="input--style-4" type="text" name="num" id="num">
+                                        <button class="btn btn--radius-2 btn--blue" id="generateButton">Generate</button>
+                                    </div>
+                                </div>
+                            </div>
+                        
+                            <div id="subformContainer">
+                                <!-- Generated subform fields will be added here -->
+                            </div>                    
+                        <input class="btn btn--radius-2 btn--blue" name ="sub" type="submit" value="Submit">
                 </div>
             </div>
         </div>
     </div>
-<form>
-</form>    <div class="page-wrapper bg-gra-02 p-t-130 p-b-100 font-poppins">
-    <div class="wrapper wrapper--w780">
-        <div class="card card-4">
-            <div class="card-body">
 
-    <div class="row row-space">
-        <div class="col-2">
-            <div class="input-group">
-                <label for="num">Number of VNFs:</label>
-                <input class="input--style-4" type="text" name="num" id="num">
-                <button class="btn btn--radius-2 btn--blue" id="generateButton">Generate</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="subformContainer">
-        <!-- Generated subform fields will be added here -->
-    </div>
-</form>
     <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
     <script src="{% static 'vendor/select2/select2.min.js' %}"></script>
     <script src="{% static 'vendor/datepicker/moment.min.js' %}"></script>
     <script src="{% static 'vendor/datepicker/daterangepicker.js' %}"></script>
     <script src="{% static 'js/global.js' %}"></script>
 
-    <script>
-        $(document).ready(function () {
-            $("#generateButton").click(function () {
-                var num = parseInt($("#num").val());
-                var subformContainer = $("#subformContainer");
-                if(num>5)
-                alert("vnf are limited to 5")
-                else{
+    
+<script>
+    $(document).ready(function () {
+        $("#generateButton").click(function (event) {
+            event.preventDefault(); // Prevent the default form submission
+            
+            var num = parseInt($("#num").val());
+            var subformContainer = $("#subformContainer");
+            
+            if (num > 5) {
+                alert("vnf are limited to 5");
+            } else {
                 subformContainer.empty();
                 for (var i = 0; i < num; i++) {
                     var subform = `
@@ -153,12 +151,12 @@
                                         </div>
                                     </div>
                                         `;
-                                        
-                                        
+         
                     subformContainer.append(subform);
-                }}
-            });
+                }
+            }
         });
-    </script>
+    });
+</script>
 </body>
 </html>
