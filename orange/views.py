@@ -34,8 +34,3 @@ def test(request):
     return render(request,"test.html")
 
 
-def generateSubForms(request):
-    if request.method == 'POST':
-        num = int(request.POST.get('num'))
-        test = [1,2,3]
-    return render(request,"test.html",{"num":num})

@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>NSD Form</title>
     <link href="{% static 'vendor/mdi-font/css/material-design-iconic-font.min.css' %}" rel="stylesheet" media="all">
@@ -9,8 +10,9 @@
     <link href="{% static 'vendor/datepicker/daterangepicker.css' %}" rel="stylesheet" media="all">
     <link href="{% static 'css/main.css' %}" rel="stylesheet" media="all">
 </head>
+
 <body>
-        <div class="page-wrapper bg-gra-02 p-t-130 p-b-100 font-poppins">
+    <div class="page-wrapper bg-gra-02 p-t-130 p-b-100 font-poppins">
         <div class="wrapper wrapper--w780">
             <div class="card card-4">
                 <div class="card-body">
@@ -26,19 +28,19 @@
                                     <input class="input--style-4" type="text" name="nsdVersion"><br><br>
                                     <label for="nsdDescription">Description:</label>
                                     <input class="input--style-4" type="text" name="nsdDescription"><br><br>
-                                    
+
                                 </div>
                             </div>
                             <div class="col-2">
                                 <div class="input-group">
-                                        <label for="softwareMin">Software Min:</label>
-                                        <input class="input--style-4" type="text" name="softwareMin"><br><br>
-                                        <label>Hardware:</label>
+                                    <label for="softwareMin">Software Min:</label>
+                                    <input class="input--style-4" type="text" name="softwareMin"><br><br>
+                                    <label>Hardware:</label>
                                     <input class="input--style-4" type="text" name="hardware"><br><br>
                                 </div>
                             </div>
                         </div>
-                        <h2 class="title">General</h2>            
+                        <h2 class="title">General</h2>
                         <div class="row row-space">
                             <div class="col-2">
                                 <div class="input-group">
@@ -46,79 +48,71 @@
                                     </div>
                                 </div>
                             </div>
-                        <div class="row row-space">
-                            <div class="col-2">
-                                <div class="input-group">
-                                    <label for="generalID">ID:</label>
-                                    <input class="input--style-4" type="text" name="generalID"><br><br>
-                                    <label for="generalDescription">Description:</label>
-                                    <input class="input--style-4" type="text" name="generalDescription"><br><br>
+                            <div class="row row-space">
+                                <div class="col-2">
+                                    <div class="input-group">
+                                        <label for="generalID">ID:</label>
+                                        <input class="input--style-4" type="text" name="generalID"><br><br>
+                                        <label for="generalDescription">Description:</label>
+                                        <input class="input--style-4" type="text" name="generalDescription"><br><br>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="input-group">
+                                        <label for="openvswitchPmdCpuMask">PMD CPU Mask:</label>
+                                        <input class="input--style-4" type="text" name="openvswitchPmdCpuMask"><br>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-2">
-                                <div class="input-group">
-                                    <label for="openvswitchPmdCpuMask">PMD CPU Mask:</label>
-                                    <input class="input--style-4" type="text" name="openvswitchPmdCpuMask"><br>
-                                </div>
-                            </div>
+
                         </div>
-                            
-                        </div>
-                        <div class="p-t-15"><h2 class="title">VNF</h2>            
+                        <form>
+                        </form>
                             <div class="row row-space">
                                 <div class="col-2">
                                     <div class="input-group">
                                         <label for="num">Number of VNFs:</label>
-                                        <input class="input--style-4" type="text" name="num">
-                                        <a class="btn btn--radius-2 btn--blue" href="{% url 'generateSubForms' %}">Generate</a>
+                                        <input class="input--style-4" type="text" name="num" id="num">
+                                        <button class="btn btn--radius-2 btn--blue" id="generateButton">Generate</button>
                                     </div>
                                 </div>
-                                <div id="subform-container">
-                                    <!-- The generated subforms will be placed here -->
-                                    {% for i in range(num) %}
-                                    <div class="subform">
-                                        <label for="subform-field-{{ i }}">Subform Field {{ i }}:</label>
-                                        <input class="input--style-4" type="text" name="subform-field-{{ i }}">
-                                    </div>
-                                    {% endfor %}
-                                </div> 
-                            <input class="btn btn--radius-2 btn--blue" type="submit" value="Submit">
-                        </div>
-                    </form>
+                            </div>
+                        
+                            <div id="subformContainer">
+                                <!-- Generated subform fields will be added here -->
+                            </div>
+                        </form>
+                        <input class="btn btn--radius-2 btn--blue" type="submit" value="Submit">
                 </div>
             </div>
         </div>
     </div>
-    </form>
+
     <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
     <script src="{% static 'vendor/select2/select2.min.js' %}"></script>
     <script src="{% static 'vendor/datepicker/moment.min.js' %}"></script>
     <script src="{% static 'vendor/datepicker/daterangepicker.js' %}"></script>
-    <script src="{% static 'js/global.js' %}"></script>    
-</body>
-<script>
-    $(document).ready(function() {
-        $("#generateButton").click(function() {
-            var num = parseInt($("#num").val());
-            var subformContainer = $("#subformContainer");
+    <script src="{% static 'js/global.js' %}"></script>
 
-            subformContainer.empty();
-            for (var i = 0; i < num; i++) {
-                var subform = `
-                    <div class="subform">
-                        <label for="subform-field-${i}">Subform Field ${i}:</label>
-                        <input class="input--style-4" type="text" name="subform-field-${i}">
-                    </div>
-                `;
-                subformContainer.append(subform);
-            }
+    <script>
+        $(document).ready(function () {
+            $("#generateButton").click(function () {
+                var num = parseInt($("#num").val());
+                var subformContainer = $("#subformContainer");
+
+                subformContainer.empty();
+                for (var i = 0; i < num; i++) {
+                    var subform = `
+                                            <div class="subform">
+                                                <label for="subform-field-${i}">Subform Field ${i}:</label>
+                                                <input class="input--style-4" type="text" name="subform-field-${i}">
+                                            </div>
+                                        `;
+                    subformContainer.append(subform);
+                }
+            });
         });
-    });
-</script>
+    </script>
+</body>
+
 </html>
-
-
-
-
-
-
