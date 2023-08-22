@@ -66,28 +66,32 @@
                             </div>
 
                         </div>
-                        <form>
-                        </form>
-                            <div class="row row-space">
-                                <div class="col-2">
-                                    <div class="input-group">
-                                        <label for="num">Number of VNFs:</label>
-                                        <input class="input--style-4" type="text" name="num" id="num">
-                                        <button class="btn btn--radius-2 btn--blue" id="generateButton">Generate</button>
-                                    </div>
-                                </div>
-                            </div>
-                        
-                            <div id="subformContainer">
-                                <!-- Generated subform fields will be added here -->
-                            </div>
-                        </form>
+
                         <input class="btn btn--radius-2 btn--blue" type="submit" value="Submit">
                 </div>
             </div>
         </div>
     </div>
+<form>
+</form>    <div class="page-wrapper bg-gra-02 p-t-130 p-b-100 font-poppins">
+    <div class="wrapper wrapper--w780">
+        <div class="card card-4">
+            <div class="card-body">
 
+    <div class="row row-space">
+        <div class="col-2">
+            <div class="input-group">
+                <label for="num">Number of VNFs:</label>
+                <input class="input--style-4" type="text" name="num" id="num">
+                <button class="btn btn--radius-2 btn--blue" id="generateButton">Generate</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="subformContainer">
+        <!-- Generated subform fields will be added here -->
+    </div>
+</form>
     <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
     <script src="{% static 'vendor/select2/select2.min.js' %}"></script>
     <script src="{% static 'vendor/datepicker/moment.min.js' %}"></script>
@@ -103,11 +107,26 @@
                 subformContainer.empty();
                 for (var i = 0; i < num; i++) {
                     var subform = `
+                                            <h2 class="title">VNF ${i}</h2>
+
                                             <div class="subform">
-                                                <label for="subform-field-${i}">Subform Field ${i}:</label>
-                                                <input class="input--style-4" type="text" name="subform-field-${i}">
+                                                <label for="subform-field-${i}">VNF name:</label>
+                                                <input class="input--style-4" type="text" name="name${i}">
+                                            </div>
+                                            <div class="subform">
+                                                <label for="subform-field-${i}">VNF version:</label>
+                                                <input class="input--style-4" type="text" name="version${i}">
+                                            </div>
+                                            <div class="subform">
+                                                <label for="subform-field-${i}">Memory:</label>
+                                                <input class="input--style-4" type="text" name="memory${i}">
+                                            </div>
+                                            <div class="subform">
+                                                <label for="subform-field-${i}">CPUs:</label>
+                                                <input class="input--style-4" type="text" name="cpu">
                                             </div>
                                         `;
+                                        
                     subformContainer.append(subform);
                 }
             });
