@@ -42,20 +42,28 @@ def test(request):
                     cpu = request.POST.get('cpu'+str(inp))
                     data['objects'][i]['nof-vcpus']['value'] = cpu
                     url = data['objects'][i]['disks']['items'][0]['location']['value']
-                    url = "https://10.253.56.133/"+url.rsplit('/', 1)[-1]
+                    url = "https://10.253.56.133/"+url.rsplit('/')[-1]
                     data['objects'][i]['disks']['items'][0]['location']['value'] = url
                     
                     #update persistance id
                     data['objects'][i]['persistence-id']['value'] = vnfname+"_3int"
                     
                     #collect Cloud-init paths and Cloud-init contents
+                    
                     cloud_init_paths = []
                     cloud_init_contents = []
                     for c in range(4):
-                        path = request.POST.get('Cloud-init-path' + str(c) + '-' + str(i))
-                        content = request.POST.get('Cloud-init-content' + str(c) + '-' + str(i))
+                        #Cloud-init-content1-${i}
+                        #Cloud-init-path1-0
+                        path = request.POST.get(f'Cloud-init-path{c+1}')
+                        content = request.POST.get(f'Cloud-init-content{c+1}')
                         cloud_init_paths.append(path)
                         cloud_init_contents.append(content)
+                        data['objects'][i]['customization']['pathnames']['items'][0]['location']['value'] = path
+                        data['objects'][i]['customization']['pathnames']['items'][0]['template-content']['value'] = content
+                    
+                    
+
                     i+=1
                     num-=1
                     inp = int(inp)
@@ -119,4 +127,32 @@ objects[type==vnf].cpu-pinning ===> à poser la questionb à Imane
 objects[type==vnf].customization.pathnames.items[i].location ===> Cloud-init path i+1
 
 objects[type==vnf].customization.pathnames.items[i].template-content ===> Cloud-init content i+1 (base64)             
+'''
+
+
+
+
+
+
+'''
+            "customization": {
+                "pathnames": {
+                    "items": [
+                        {
+                            "location": {
+                                "value": "\/openstack\/latest\/user_data"
+                            },
+                            "template-definition": {
+                                "value": "base64_encoded_content"
+                            },
+                            "template-content": {
+                                "value": "CiNWTSBjb25maWcgZmlsZQpjb25maWcgdGVybWluYWwKY3J5cHRvIGtleSBnZW5lcmF0ZSBkc2EgMjA0OCBuby1jb25maXJtCmlwIHNzaCBlbmFibGUKYmluZCBzc2ggZ2lnYWJpdGV0aGVybmV0IDAvMC4zOTk4CmlwIHNzaCBhdXRoLW1ldGhvZCBhdXRvbWF0aWMKaXAgc3NoIGF1dGgtcmV0cmllcyAzCmlwIHNzaCBhdXRoLXRpbWVvdXQgMzAKaXAgc3NoIHRpbWVvdXQgNjAwCmhvc3RuYW1lICJla2kyIgppbnRlcmZhY2UgZ2lnYWJpdGV0aGVybmV0IDAvMC4zOTk4CiBlbmNhcHN1bGF0aW9uIGRvdDFxIDM5OTgKIGlwIGFkZHJlc3MgMTMuMTMuMTMuMiAyNTUuMjU1LjI1NS4wCmV4aXQKaXAgcm91dGUgMC4wLjAuMCAwLjAuMC4wIDEzLjEzLjEzLjQKCg=="
+                            }
+                        }
+                    ]
+                },
+                if items in not none and contents is not none:
+                    data['customization']['pathnames']['items'][i]['location].append(path)
+                    data['customization']['pathnames']['items'][i]['template-content'].append(content)
+                    data['customization']['pathnames']['items'][i] = "base64_encoded_content"
 '''
