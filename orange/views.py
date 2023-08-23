@@ -10,7 +10,7 @@ def test(request):
     elif num == '2':
         json_filename = "Fichier_Conf_1.json"
     elif num == '3':
-        json_filename = "Fichier_Conf_3.json"
+        json_filename = "Fichier_Conf_1.json"
     elif num == '4':
         json_filename = "Fichier_Conf_4.json"
     elif num == '5':
@@ -28,9 +28,29 @@ def test(request):
         
         with open(f"orange/static/{json_filename}", "r") as file:
             data = json.load(file)
-            for i in range(int(num)):
-                vnfname = request.POST.get('name'+str(i))
-                data['objects'][i+1]['name']['value'] = vnfname
+            i = 0
+            inp = 0
+
+            num = int(num)
+            objects = data['objects']
+            for object in objects:
+                if data['objects'][i]['type']['value'] == "vnf" and num > 0:
+                    vnfname = request.POST.get('name'+str(inp))
+                    data['objects'][i]['name']['value'] = vnfname
+                    memory = request.POST.get('memory'+str(inp))
+                    data['objects'][i]['memory']['value'] = memory
+                    cpu = request.POST.get('cpu'+str(inp))
+                    data['objects'][i]['nof-vcpus']['value'] = cpu
+                    #update persistance id
+                    data['objects'][i]['persistence-id']['value'] = vnfname+"_3int"
+                    i+=1
+                    num-=1
+                    inp = int(inp)
+                    inp+=1
+                elif data['objects'][i]['type']['value'] != "vnf" and num > 0:
+                    i+=1
+                elif num == 0:
+                    break
             data['version'] = version
             data['nsd']['properties']['name'] = name
             data['nsd']['version'] = nsdversion
