@@ -41,8 +41,21 @@ def test(request):
                     data['objects'][i]['memory']['value'] = memory
                     cpu = request.POST.get('cpu'+str(inp))
                     data['objects'][i]['nof-vcpus']['value'] = cpu
+                    url = data['objects'][i]['disks']['items'][0]['location']['value']
+                    url = "https://10.253.56.133/"+url.rsplit('/', 1)[-1]
+                    data['objects'][i]['disks']['items'][0]['location']['value'] = url
+                    
                     #update persistance id
                     data['objects'][i]['persistence-id']['value'] = vnfname+"_3int"
+                    
+                    #collect Cloud-init paths and Cloud-init contents
+                    cloud_init_paths = []
+                    cloud_init_contents = []
+                    for c in range(4):
+                        path = request.POST.get('Cloud-init-path' + str(c) + '-' + str(i))
+                        content = request.POST.get('Cloud-init-content' + str(c) + '-' + str(i))
+                        cloud_init_paths.append(path)
+                        cloud_init_contents.append(content)
                     i+=1
                     num-=1
                     inp = int(inp)
@@ -99,17 +112,11 @@ def vnfconfig(request):
 
 **********objects[type==vnf].nof-vcpus.value ==> VNF CPUs
 
+**********objects[type==vnf].disks.items[0].location.value ===> "https://10.253.56.133/<VNF File>"
+
 objects[type==vnf].cpu-pinning ===> à poser la questionb à Imane
 
 objects[type==vnf].customization.pathnames.items[i].location ===> Cloud-init path i+1
 
-objects[type==vnf].customization.pathnames.items[i].template-content ===> Cloud-init content i+1 (base64)
-
-objects[type==vnf].disks.items[0].location.value ===> "https://10.253.56.133/<VNF File>"
-
-
- "location": {
-                #file#            "value": "OneOS-vCPE-x86_pi1-6.6.1m2.qcow2"
-            },
-                       
+objects[type==vnf].customization.pathnames.items[i].template-content ===> Cloud-init content i+1 (base64)             
 '''
