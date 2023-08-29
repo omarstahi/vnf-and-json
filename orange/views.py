@@ -1,6 +1,9 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 import json
+import os
+
+
 
 def test(request):
     num = request.POST.get('num')
@@ -31,6 +34,7 @@ def test(request):
             i = 0
             inp = 0
             test = 0
+            cpuset = 3
             vnf_cloud_index = 0
             num = int(num)
             objects = data['objects']
@@ -50,6 +54,16 @@ def test(request):
                     #update persistance id
                     data['objects'][i]['persistence-id']['value'] = vnfname+"_3int"
                     
+                    #cpu-pinning
+                    for j in range( int(cpu) ):
+                        cpuItem = {
+                                "cpuset": {
+                                    "value": cpuset
+                                }
+                            }
+                        data['objects'][i]['cpu-pinning']['items'].append(cpuItem)
+                        cpuset += 1
+                    
                     #collect Cloud-init paths and Cloud-init contents
                     
                     cloud_init_paths = []
@@ -60,30 +74,25 @@ def test(request):
                         if path != "" and content != "":
                             cloud_init_paths.append(path)
                             cloud_init_contents.append(content)
-                            if test == 0:    
-                                data['objects'][i]['customization']['pathnames']['items'][0]['location']['value'] = path
-                                data['objects'][i]['customization']['pathnames']['items'][0]['template-content']['value'] = content
-                                test+=1
-                            else:
-                                #this way don't work because item point on items[0] so any change in item will be in items[0]
-                                #item = data['objects'][i]['customization']['pathnames']['items'][0]
+                            #this way don't work because item point on items[0] so any change in item will be in items[0]
+                            #item = data['objects'][i]['customization']['pathnames']['items'][0]
 
-                                #so i used this approach
-                                item={
-                                    "location": {
-                                        "value": "\/openstack\/latest\/user_data"
-                                    },
-                                    "template-definition": {
-                                        "value": "base64_encoded_content"
-                                    },
-                                    "template-content": {
-                                        "value": "CiNWTSBjb25maWcgZmlsZQpjb25maWcgdGVybWluYWwKY3J5cHRvIGtleSBnZW5lcmF0ZSBkc2EgMjA0OCBuby1jb25maXJtCmlwIHNzaCBlbmFibGUKYmluZCBzc2ggZ2lnYWJpdGV0aGVybmV0IDAvMC4zOTk4CmlwIHNzaCBhdXRoLW1ldGhvZCBhdXRvbWF0aWMKaXAgc3NoIGF1dGgtcmV0cmllcyAzCmlwIHNzaCBhdXRoLXRpbWVvdXQgMzAKaXAgc3NoIHRpbWVvdXQgNjAwCmhvc3RuYW1lICJla2kyIgppbnRlcmZhY2UgZ2lnYWJpdGV0aGVybmV0IDAvMC4zOTk4CiBlbmNhcHN1bGF0aW9uIGRvdDFxIDM5OTgKIGlwIGFkZHJlc3MgMTMuMTMuMTMuMiAyNTUuMjU1LjI1NS4wCmV4aXQKaXAgcm91dGUgMC4wLjAuMCAwLjAuMC4wIDEzLjEzLjEzLjQKCg=="
-                                    }
+                            #so i used this approach
+                            item = {
+                                "location": {
+                                    "value": "\/openstack\/latest\/user_data"
+                                },
+                                "template-definition": {
+                                    "value": "base64_encoded_content"
+                                },
+                                "template-content": {
+                                    "value": "CiNWTSBjb25maWcgZmlsZQpjb25maWcgdGVybWluYWwKY3J5cHRvIGtleSBnZW5lcmF0ZSBkc2EgMjA0OCBuby1jb25maXJtCmlwIHNzaCBlbmFibGUKYmluZCBzc2ggZ2lnYWJpdGV0aGVybmV0IDAvMC4zOTk4CmlwIHNzaCBhdXRoLW1ldGhvZCBhdXRvbWF0aWMKaXAgc3NoIGF1dGgtcmV0cmllcyAzCmlwIHNzaCBhdXRoLXRpbWVvdXQgMzAKaXAgc3NoIHRpbWVvdXQgNjAwCmhvc3RuYW1lICJla2kyIgppbnRlcmZhY2UgZ2lnYWJpdGV0aGVybmV0IDAvMC4zOTk4CiBlbmNhcHN1bGF0aW9uIGRvdDFxIDM5OTgKIGlwIGFkZHJlc3MgMTMuMTMuMTMuMiAyNTUuMjU1LjI1NS4wCmV4aXQKaXAgcm91dGUgMC4wLjAuMCAwLjAuMC4wIDEzLjEzLjEzLjQKCg=="
                                 }
-                                data['objects'][i]['customization']['pathnames']['items'].append(item)
-                                data['objects'][i]['customization']['pathnames']['items'][test]['location']['value'] = path
-                                data['objects'][i]['customization']['pathnames']['items'][test]['template-content']['value'] = content
-                                test+=1
+                            }
+                            data['objects'][i]['customization']['pathnames']['items'].append(item)
+                            data['objects'][i]['customization']['pathnames']['items'][test]['location']['value'] = path
+                            data['objects'][i]['customization']['pathnames']['items'][test]['template-content']['value'] = content
+                            test+=1
 
                     i+=1
                     vnf_cloud_index+=1
@@ -111,6 +120,8 @@ def test(request):
         
         with open(f"orange/static/{json_filename}", "rb") as f:
             response.write(f.read())
+        
+        #os.remove("orange/static/" + json_filename )
         
         return response
     
