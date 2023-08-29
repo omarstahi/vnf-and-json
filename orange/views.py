@@ -8,16 +8,8 @@ import os
 def test(request):
     num = request.POST.get('num')
     
-    if num == '1':
-        json_filename = "Fichier_Conf_1.json"
-    elif num == '2':
-        json_filename = "Fichier_Conf_1.json"
-    elif num == '3':
-        json_filename = "Fichier_Conf_1.json"
-    elif num == '4':
-        json_filename = "Fichier_Conf_4.json"
-    elif num == '5':
-        json_filename = "Fichier_Conf_5.json"
+    if num in ['1', '2', '3', '4']:
+        json_filename = f"nsd_{num}vnf.json"
     else:
         # Handle other cases or raise an error
         json_filename = None
@@ -47,10 +39,15 @@ def test(request):
                     data['objects'][i]['memory']['value'] = memory
                     cpu = request.POST.get('cpu'+str(inp))
                     data['objects'][i]['nof-vcpus']['value'] = cpu
-                    url = data['objects'][i]['disks']['items'][0]['location']['value']
-                    url = "https://10.253.56.133/"+url.rsplit('/')[-1]
-                    data['objects'][i]['disks']['items'][0]['location']['value'] = url
+                    #url = data['objects'][i]['disks']['items'][0]['location']['value']
+                    #url = "https://10.253.56.133/"+url.rsplit('/')[-1]
+                    #data['objects'][i]['disks']['items'][0]['location']['value'] = url
+                    location = request.POST.get('location'+str(inp))
+                    data['objects'][i]['disks']['items'][0]['location']['value'] = "https://10.253.56.133/" + location
+                    bus = request.POST.get('bus'+str(inp))
+                    data['objects'][i]['disks']['items'][0]['bus']['value'] = bus
                     
+
                     #update persistance id
                     data['objects'][i]['persistence-id']['value'] = vnfname+"_3int"
                     
@@ -126,3 +123,13 @@ def test(request):
         return response
     
     return render(request, "test.html")
+
+
+'''
+"location": {
+                            "value": "https://10.253.56.133/vnf.qcow2"
+                        },
+                        "bus": {
+                            "value": "virtio"
+                        },
+'''
