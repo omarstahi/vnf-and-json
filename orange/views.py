@@ -3,13 +3,12 @@ from django.http import HttpResponse
 import json
 import os
 
-
-
 def test(request):
     num = request.POST.get('num')
     
     if num in ['1', '2', '3', '4']:
         json_filename = f"nsd_{num}vnf.json"
+        response_file = f"response_nsd_{num}_vnf.json"
     else:
         # Handle other cases or raise an error
         json_filename = None
@@ -39,9 +38,6 @@ def test(request):
                     data['objects'][i]['memory']['value'] = memory
                     cpu = request.POST.get('cpu'+str(inp))
                     data['objects'][i]['nof-vcpus']['value'] = cpu
-                    #url = data['objects'][i]['disks']['items'][0]['location']['value']
-                    #url = "https://10.253.56.133/"+url.rsplit('/')[-1]
-                    #data['objects'][i]['disks']['items'][0]['location']['value'] = url
                     location = request.POST.get('location'+str(inp))
                     data['objects'][i]['disks']['items'][0]['location']['value'] = "https://10.253.56.133/" + location
                     bus = request.POST.get('bus'+str(inp))
@@ -109,27 +105,18 @@ def test(request):
             data['nsd']['properties']['software_min'] = softwaremin
             data['general']['id']['value'] = name + "_3int"
         
-        with open(f"orange/static/{json_filename}", "w") as file:
+        with open(f"orange/static/{response_file}", "w") as file:
             json.dump(data, file, indent=4)
         
         response = HttpResponse(content_type="application/octet-stream")
-        response['Content-Disposition'] = f'attachment; filename="{json_filename}"'
+        response['Content-Disposition'] = f'attachment; filename={response_file}'
         
-        with open(f"orange/static/{json_filename}", "rb") as f:
+        with open(f"orange/static/{response_file}", "rb") as f:
             response.write(f.read())
         
-        #os.remove("orange/static/" + json_filename )
+        #remove temp file
+        os.remove(f"orange/static/{response_file}")
         
         return response
     
     return render(request, "test.html")
-
-
-'''
-"location": {
-                            "value": "https://10.253.56.133/vnf.qcow2"
-                        },
-                        "bus": {
-                            "value": "virtio"
-                        },
-'''
