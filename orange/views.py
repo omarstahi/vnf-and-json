@@ -18,7 +18,8 @@ def test(request):
         name = request.POST.get('nsdName')
         nsdversion = request.POST.get('nsdVersion')
         nsddesc = request.POST.get('nsdDescription')
-        softwaremin = request.POST.get('softwareMin')
+        numHard = request.POST.get('numHard')
+                    
         
         with open(f"orange/static/{json_filename}", "r") as file:
             data = json.load(file)
@@ -27,6 +28,7 @@ def test(request):
             test = 0
             cpuset = 3
             vnf_cloud_index = 0
+            hardware_index = 0
             num = int(num)
             objects = data['objects']
             
@@ -102,9 +104,11 @@ def test(request):
             data['nsd']['properties']['name'] = name
             data['nsd']['version'] = nsdversion
             data['nsd']['properties']['description'] = nsddesc
-            data['nsd']['properties']['software_min'] = softwaremin
             data['general']['id']['value'] = name + "_3int"
-        
+            for h in range(1, int(numHard) + 1):
+                hardName = request.POST.get('name'+str(h))
+                data['nsd']['properties']['hardware'].append(hardName)
+                
         with open(f"orange/static/{response_file}", "w") as file:
             json.dump(data, file, indent=4)
         

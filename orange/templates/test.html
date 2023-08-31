@@ -31,15 +31,23 @@
                             </div>
                             <div class="col-2">
                                 <div class="input-group">
-                                    <label for="softwareMin">Software Min:</label>
-                                    <input class="input--style-4" type="text" name="softwareMin"><br><br>
                                     <label for="nsdDescription">Description:</label>
                                     <input class="input--style-4" type="text" name="nsdDescription"><br><br>
-
                                 </div>
                             </div>
                         </div>
-                        
+                        <div class="row row-space">
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <label for="numHard">Number of hardwares:</label>
+                                    <input class="input--style-4" type="text" name="numHard" id="numHard"><br><br>
+                                    <button class="btn btn--radius-2 btn--blue" id="generateHard">Generate</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="hardContainer">
+                            <!-- Generated subform fields will be added here -->
+                        </div>
                             <div class="row row-space">
                                 <div class="col-2">
                                     <div class="input-group">
@@ -52,7 +60,7 @@
                         
                             <div id="subformContainer">
                                 <!-- Generated subform fields will be added here -->
-                            </div>                    
+                            </div>          
                         <input class="btn btn--radius-2 btn--blue" name ="sub" type="submit" value="Submit">
                 </div>
             </div>
@@ -65,20 +73,20 @@
     <script src="{% static 'vendor/datepicker/daterangepicker.js' %}"></script>
     <script src="{% static 'js/global.js' %}"></script>
     
-<script>
-    $(document).ready(function () {
-        $("#generateButton").click(function (event) {
-            event.preventDefault(); // Prevent the default form submission
-            
-            var num = parseInt($("#num").val());
-            var subformContainer = $("#subformContainer");
-            
-            if (num > 4) {
-                alert("vnf are limited to 4");
-            } else {
-                subformContainer.empty();
-                for (var i = 0; i < num; i++) {
-                    var subform = `
+    <script>
+        $(document).ready(function () {
+            $("#generateButton").click(function (event) {
+                event.preventDefault(); // Prevent the default form submission
+                
+                var num = parseInt($("#num").val());
+                var subformContainer = $("#subformContainer");
+                
+                if (num > 4) {
+                    alert("vnf are limited to 4");
+                } else {
+                    subformContainer.empty();
+                    for (var i = 0; i < num; i++) {
+                        var subform = `
                                             <h2 class="title">VNF ${i+1}</h2>
 
                                             <div class="row row-space">
@@ -148,12 +156,41 @@
                                         </div>
                                     </div>
                                         `;
-         
-                    subformContainer.append(subform);
+             
+                        subformContainer.append(subform);
+                    }
                 }
-            }
+            });
+            
+            $("#generateHard").click(function (event) {
+                event.preventDefault(); // Prevent the default form submission
+                
+                var num = parseInt($("#numHard").val());
+                var hardContainer = $("#hardContainer");
+                
+                if (num > 3) {
+                    alert("Hardwares are limited to 3");
+                } else {
+                    hardContainer.empty();
+                    for (var i = 0; i < num; i++) {
+                        
+                        var subform = `
+                        <h2 class="title">Hardware ${i+1}</h2>
+                        <div class="row row-space">
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <label for="name${i+1}">name:</label>
+                                    <input class="input--style-4" type="text" name="name${i+1}"><br><br>
+                                </div>
+                            </div>
+                        </div>
+                        `;        
+                        hardContainer.append(subform);
+                    }
+                }
+            });
         });
-    });
-</script>
+    </script>
+    
 </body>
 </html>
