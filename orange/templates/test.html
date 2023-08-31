@@ -26,7 +26,7 @@
                                     <input class="input--style-4" type="text" name="nsdName"><br><br>
                                     <label for="nsdVersion">Version:</label>
                                     <input class="input--style-4" type="text" name="nsdVersion"><br><br>
-                     
+
                                 </div>
                             </div>
                             <div class="col-2">
@@ -41,27 +41,29 @@
                                 <div class="input-group">
                                     <label for="numHard">Number of hardwares:</label>
                                     <input class="input--style-4" type="text" name="numHard" id="numHard"><br><br>
-                                    <button class="btn btn--radius-2 btn--blue" id="generateHard">Generate</button>
+                                    <button class="btn btn--radius-2 btn--blue" id="generateHard">Generate
+                                        Hardware</button>
                                 </div>
                             </div>
                         </div>
                         <div id="hardContainer">
                             <!-- Generated subform fields will be added here -->
                         </div>
-                            <div class="row row-space">
-                                <div class="col-2">
-                                    <div class="input-group">
-                                        <label for="num">Number of VNFs:</label>
-                                        <input class="input--style-4" type="text" name="num" id="num"><br><br>
-                                        <button class="btn btn--radius-2 btn--blue" id="generateButton">Generate</button>
-                                    </div>
+                        <div class="row row-space">
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <label for="num">Number of VNFs:</label>
+                                    <input class="input--style-4" type="text" name="num" id="num"><br><br>
+                                    <button class="btn btn--radius-2 btn--blue" id="generateButton">Generate
+                                        VNF</button>
                                 </div>
                             </div>
-                        
-                            <div id="subformContainer">
-                                <!-- Generated subform fields will be added here -->
-                            </div>          
-                        <input class="btn btn--radius-2 btn--blue" name ="sub" type="submit" value="Submit">
+                        </div>
+
+                        <div id="subformContainer">
+                            <!-- Generated subform fields will be added here -->
+                        </div>
+                        <input class="btn btn--radius-2 btn--blue" name="sub" type="submit" value="Submit">
                 </div>
             </div>
         </div>
@@ -72,125 +74,138 @@
     <script src="{% static 'vendor/datepicker/moment.min.js' %}"></script>
     <script src="{% static 'vendor/datepicker/daterangepicker.js' %}"></script>
     <script src="{% static 'js/global.js' %}"></script>
-    
+
+    <!-- ... (your HTML code) ... -->
+
     <script>
         $(document).ready(function () {
             $("#generateButton").click(function (event) {
                 event.preventDefault(); // Prevent the default form submission
-                
+
                 var num = parseInt($("#num").val());
                 var subformContainer = $("#subformContainer");
-                
+
                 if (num > 4) {
                     alert("vnf are limited to 4");
                 } else {
                     subformContainer.empty();
                     for (var i = 0; i < num; i++) {
                         var subform = `
-                                            <h2 class="title">VNF ${i+1}</h2>
+                    <h2 class="title">VNF ${i + 1}</h2>
 
-                                            <div class="row row-space">
-                                            <div class="col-2">
-                                                <div class="input-group">
-                                                <div class="subform">
-                                                <label for="subform-field-${i}">VNF name:</label>
-                                                <input class="input--style-4" type="text" name="name${i}"><br><br>
-                                            </div>
-                                            <div class="subform">
-                                                <label for="subform-field-${i}">persistence-id:</label>
-                                                <input class="input--style-4" type="text" name="persistence-id${i}"><br><br>
-                                            </div>
-                                            <div class="subform">
-                                                <label for="subform-field-${i}">Location:</label>
-                                                <input class="input--style-4" type="text" name="location${i}"><br><br>
-                                            </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-2">
-                                            <div class="input-group">
-                                                <div class="subform">
-                                                <label for="subform-field-${i}">Memory (GiB):</label>
-                                                <input class="input--style-4" type="text" name="memory${i}"><br><br>
-                                            </div>
-                                            <div class="subform">
-                                                <label for="subform-field-${i}">CPUs:</label>
-                                                <input class="input--style-4" type="text" name="cpu${i}"><br><br>
-                                            </div>
-                                            <div class="subform">
-                                                <label for="subform-field-${i}">Bus:</label>
-                                                <input class="input--style-4" type="text" name="bus${i}"><br><br>
-                                            </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <h2 class="title">Cloud-init Details</h2>
+<div class="row row-space">
+<div class="col-2">
+    <div class="input-group">
+    <div class="subform">
+    <label for="subform-field-${i}">VNF name:</label>
+    <input class="input--style-4" type="text" name="name${i}"><br><br>
+</div>
+<div class="subform">
+    <label for="subform-field-${i}">persistence-id:</label>
+    <input class="input--style-4" type="text" name="persistence-id${i}"><br><br>
+</div>
+<div class="subform">
+    <label for="subform-field-${i}">Location:</label>
+    <input class="input--style-4" type="text" name="location${i}"><br><br>
+</div>
+</div>
+</div>
+<div class="col-2">
+<div class="input-group">
+    <div class="subform">
+    <label for="subform-field-${i}">Memory (GiB):</label>
+    <input class="input--style-4" type="text" name="memory${i}"><br><br>
+</div>
+<div class="subform">
+    <label for="subform-field-${i}">CPUs:</label>
+    <input class="input--style-4" type="text" name="cpu${i}"><br><br>
+</div>
+<div class="subform">
+    <label for="subform-field-${i}">Bus:</label>
+    <input class="input--style-4" type="text" name="bus${i}"><br><br>
+</div>
+</div>
+</div>
+</div>
 
-                                    <div class="row row-space">
-                                            <div class="col-2">
-                                                <div class="input-group">
-                                                <div class="subform">
-                                                <label for="Cloud-init-path1${i}">Cloud-init path 1</label>
-                                                <input class="input--style-4" type="text" name="Cloud-init-path1${i}"><br><br>
-                                                <label for="Cloud-init-path2${i}">Cloud-init path 2</label>
-                                                <input class="input--style-4" type="text" name="Cloud-init-path2${i}"><br><br>
-                                                <label for="Cloud-init-path3${i}">Cloud-init path 3</label>
-                                                <input class="input--style-4" type="text" name="Cloud-init-path3${i}"><br><br>
-                                                <label for="Cloud-init-path4${i}">Cloud-init path 4</label>
-                                                <input class="input--style-4" type="text" name="Cloud-init-path4${i}"><br><br>
-                                            </div>                     
-                                            </div>
-                                        </div>
-                                        <div class="col-2">
-                                            <div class="input-group">
-                                                <div class="subform">
-                                                <label for="Cloud-init-content1${i}">Cloud-init content 1</label>
-                                                <input class="input--style-4" type="text" name="Cloud-init-content1${i}"><br><br>
-                                                <label for="Cloud-init-content2${i}">Cloud-init content 2</label>
-                                                <input class="input--style-4" type="text" name="Cloud-init-content2${i}"><br><br>
-                                                <label for="Cloud-init-content3${i}">Cloud-init content 3</label>
-                                                <input class="input--style-4" type="text" name="Cloud-init-content3${i}"><br><br>
-                                                <label for="Cloud-init-content4${i}">Cloud-init content 4</label>
-                                                <input class="input--style-4" type="text" name="Cloud-init-content4${i}">
-                                                
-                                            </div>
-                                        </div>
-                                    </div>
-                                        `;
-             
+                        <h2 class="title">Cloud-init Details</h2>
+                        <div class="row row-space">
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <label for="numCloud${i}">Number of Cloud-init:</label>
+                                    <input class="input--style-4" type="text" name="numCloud${i}" id="numCloud${i}">
+                                    <button class="btn btn--radius-2 btn--blue generateCloudButton" data-index="${i}">Generate Cloud</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="cloudContainer${i}">
+                            <!-- Generated subform fields will be added here -->
+                        </div>
+                    `;
+
                         subformContainer.append(subform);
                     }
                 }
             });
-            
-            $("#generateHard").click(function (event) {
-                event.preventDefault(); // Prevent the default form submission
-                
-                var num = parseInt($("#numHard").val());
-                var hardContainer = $("#hardContainer");
-                
-                if (num > 3) {
-                    alert("Hardwares are limited to 3");
-                } else {
-                    hardContainer.empty();
-                    for (var i = 0; i < num; i++) {
-                        
-                        var subform = `
-                        <h2 class="title">Hardware ${i+1}</h2>
+
+            $(document).on("click", ".generateCloudButton", function (event) {
+                event.preventDefault();
+                var vnfIndex = $(this).data("index");
+                var numCloud = parseInt($(`#numCloud${vnfIndex}`).val());
+                var cloudContainer = $(`#cloudContainer${vnfIndex}`);
+                cloudContainer.empty();
+                for (var i = 0; i < numCloud; i++) {
+                    var cloudSubform = `
+                    <h2 class="title">Cloud-init ${i + 1} for VNF ${vnfIndex + 1}</h2>
+                    <div class="row row-space">
+                        <div class="col-2">
+                            <div class="input-group">
+                                <label for="Cloud-init-path-${vnfIndex}-${i}">Cloud-init path:</label>
+                                <input class="input--style-4" type="text" name="Cloud-init-path-${vnfIndex}-${i}"><br><br>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="input-group">
+                                <label for="Cloud-init-content-${vnfIndex}-${i}">Cloud-init content:</label>
+                                <input class="input--style-4" type="text" name="Cloud-init-content-${vnfIndex}-${i}">
+                            </div>
+                        </div>
+                    </div>
+                `;
+                    cloudContainer.append(cloudSubform);
+                }
+            });
+
+        });
+        $("#generateHard").click(function (event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            var num = parseInt($("#numHard").val());
+            var hardContainer = $("#hardContainer");
+
+            if (num > 3) {
+                alert("Hardwares are limited to 3");
+            } else {
+                hardContainer.empty();
+                for (var i = 0; i < num; i++) {
+
+                    var subform = `
+                        <h2 class="title">Hardware ${i + 1}</h2>
                         <div class="row row-space">
                             <div class="col-2">
                                 <div class="input-group">
-                                    <label for="name${i+1}">name:</label>
-                                    <input class="input--style-4" type="text" name="name${i+1}"><br><br>
+                                    <label for="name${i + 1}">name:</label>
+                                    <input class="input--style-4" type="text" name="name${i + 1}"><br><br>
                                 </div>
                             </div>
                         </div>
-                        `;        
-                        hardContainer.append(subform);
-                    }
+                        `;
+                    hardContainer.append(subform);
                 }
-            });
+            }
         });
     </script>
-    
+
 </body>
+
 </html>

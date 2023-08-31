@@ -63,27 +63,29 @@ def test(request):
                     
                     cloud_init_paths = []
                     cloud_init_contents = []
-                    for c in range(4):
-                        path = request.POST.get(f'Cloud-init-path{c+1}{vnf_cloud_index}')
-                        content = request.POST.get(f'Cloud-init-content{c+1}{vnf_cloud_index}')
-                        if path != "" and content != "":
-                            cloud_init_paths.append(path)
-                            cloud_init_contents.append(content)
-                            #this way don't work because item point on items[0] so any change in item will be in items[0]
-                            #item = data['objects'][i]['customization']['pathnames']['items'][0]
+                    index = request.POST.get('numCloud'+str(inp))
+                    if index != "":
+                        for c in range(int(index)):
+                            path = request.POST.get(f'Cloud-init-path-{vnf_cloud_index}-{c}')
+                            content = request.POST.get(f'Cloud-init-content-{vnf_cloud_index}-{c}')
+                            if path != "" and content != "":
+                                cloud_init_paths.append(path)
+                                cloud_init_contents.append(content)
+                                #this way don't work because item point on items[0] so any change in item will be in items[0]
+                                #item = data['objects'][i]['customization']['pathnames']['items'][0]
 
-                            #so i used this approach
-                            item = {
-                                "location": {
-                                    "value": "\/openstack\/latest\/user_data"
-                                },
-                                "template-definition": {
-                                    "value": "base64_encoded_content"
-                                },
-                                "template-content": {
-                                    "value": "CiNWTSBjb25maWcgZmlsZQpjb25maWcgdGVybWluYWwKY3J5cHRvIGtleSBnZW5lcmF0ZSBkc2EgMjA0OCBuby1jb25maXJtCmlwIHNzaCBlbmFibGUKYmluZCBzc2ggZ2lnYWJpdGV0aGVybmV0IDAvMC4zOTk4CmlwIHNzaCBhdXRoLW1ldGhvZCBhdXRvbWF0aWMKaXAgc3NoIGF1dGgtcmV0cmllcyAzCmlwIHNzaCBhdXRoLXRpbWVvdXQgMzAKaXAgc3NoIHRpbWVvdXQgNjAwCmhvc3RuYW1lICJla2kyIgppbnRlcmZhY2UgZ2lnYWJpdGV0aGVybmV0IDAvMC4zOTk4CiBlbmNhcHN1bGF0aW9uIGRvdDFxIDM5OTgKIGlwIGFkZHJlc3MgMTMuMTMuMTMuMiAyNTUuMjU1LjI1NS4wCmV4aXQKaXAgcm91dGUgMC4wLjAuMCAwLjAuMC4wIDEzLjEzLjEzLjQKCg=="
+                                #so i used this approach
+                                item = {
+                                    "location": {
+                                        "value": "\/openstack\/latest\/user_data"
+                                    },
+                                    "template-definition": {
+                                        "value": "base64_encoded_content"
+                                    },
+                                    "template-content": {
+                                        "value": "CiNWTSBjb25maWcgZmlsZQpjb25maWcgdGVybWluYWwKY3J5cHRvIGtleSBnZW5lcmF0ZSBkc2EgMjA0OCBuby1jb25maXJtCmlwIHNzaCBlbmFibGUKYmluZCBzc2ggZ2lnYWJpdGV0aGVybmV0IDAvMC4zOTk4CmlwIHNzaCBhdXRoLW1ldGhvZCBhdXRvbWF0aWMKaXAgc3NoIGF1dGgtcmV0cmllcyAzCmlwIHNzaCBhdXRoLXRpbWVvdXQgMzAKaXAgc3NoIHRpbWVvdXQgNjAwCmhvc3RuYW1lICJla2kyIgppbnRlcmZhY2UgZ2lnYWJpdGV0aGVybmV0IDAvMC4zOTk4CiBlbmNhcHN1bGF0aW9uIGRvdDFxIDM5OTgKIGlwIGFkZHJlc3MgMTMuMTMuMTMuMiAyNTUuMjU1LjI1NS4wCmV4aXQKaXAgcm91dGUgMC4wLjAuMCAwLjAuMC4wIDEzLjEzLjEzLjQKCg=="
+                                    }
                                 }
-                            }
                             data['objects'][i]['customization']['pathnames']['items'].append(item)
                             data['objects'][i]['customization']['pathnames']['items'][test]['location']['value'] = path
                             data['objects'][i]['customization']['pathnames']['items'][test]['template-content']['value'] = content
@@ -105,10 +107,11 @@ def test(request):
             data['nsd']['version'] = nsdversion
             data['nsd']['properties']['description'] = nsddesc
             data['general']['id']['value'] = name + "_3int"
-            for h in range(1, int(numHard) + 1):
-                hardName = request.POST.get('name'+str(h))
-                data['nsd']['properties']['hardware'].append(hardName)
-                
+            if numHard in ["1", "2", "3"]:
+                for h in range(1, int(numHard) + 1):
+                    hardName = request.POST.get('name'+str(h))
+                    data['nsd']['properties']['hardware'].append(hardName)
+                    
         with open(f"orange/static/{response_file}", "w") as file:
             json.dump(data, file, indent=4)
         
