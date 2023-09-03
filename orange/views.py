@@ -6,6 +6,7 @@ import os
 def test(request):
     num = request.POST.get('num')
     vlan_option = request.POST.get('vlan_option')  # Assuming you have a form input for this
+    type = request.POST.get('type')
     
     if num in ['1', '2', '3', '4']:
         print(f"vlan_option: {vlan_option}")
@@ -34,10 +35,12 @@ def test(request):
             test = 0
             cpuset = 3
             vnf_cloud_index = 0
-            hardware_index = 0
+            #hardware_index = 0
             num = int(num)
             objects = data['objects']
-            
+            memory_sum = 0
+            cpu_sum = 0
+
             for object in objects:
                 if data['objects'][i]['type']['value'] == "vnf" and num > 0:
                     vnfname = request.POST.get('name'+str(inp))
@@ -50,7 +53,8 @@ def test(request):
                     data['objects'][i]['disks']['items'][0]['location']['value'] = "https://10.253.56.133/" + location
                     bus = request.POST.get('bus'+str(inp))
                     data['objects'][i]['disks']['items'][0]['bus']['value'] = bus
-                    
+                    cpu_sum+=int(cpu)
+                    memory_sum+=int(memory)
 
                     #update persistance id
                     data['objects'][i]['persistence-id']['value'] = vnfname+"_3int"
@@ -118,7 +122,12 @@ def test(request):
                     hardName = request.POST.get('hard_name' + str(h))
                     data['nsd']['properties']['hardware'].append(hardName)  # Append hardware name to the list
                     
-
+            if type == "small" and cpu_sum > 3 or memory_sum > 8:
+                return HttpResponse("aaaaa")
+            elif type == "medium" and cpu_sum > 5 or memory_sum > 16:
+                return HttpResponse("aaaaa")
+            elif type == "big" and cpu_sum > 8 or memory_sum > 32:
+                return HttpResponse("aaaaa")
         with open(f"orange/static/{response_file}", "w") as file:
             json.dump(data, file, indent=4)
         
