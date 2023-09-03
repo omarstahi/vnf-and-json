@@ -5,9 +5,15 @@ import os
 
 def test(request):
     num = request.POST.get('num')
+    vlan_option = request.POST.get('vlan_option')  # Assuming you have a form input for this
     
     if num in ['1', '2', '3', '4']:
-        json_filename = f"nsd_{num}vnf.json"
+        print(f"vlan_option: {vlan_option}")
+
+        if vlan_option == 'with':
+            json_filename = f"with_vlan/nsd_{num}vnf.json"
+        else:
+            json_filename = f"without_vlan/nsd_{num}vnf.json"
         response_file = f"response_nsd_{num}_vnf.json"
     else:
         # Handle other cases or raise an error
@@ -19,8 +25,8 @@ def test(request):
         nsdversion = request.POST.get('nsdVersion')
         nsddesc = request.POST.get('nsdDescription')
         numHard = request.POST.get('numHard')
-                    
-        
+                           
+
         with open(f"orange/static/{json_filename}", "r") as file:
             data = json.load(file)
             i = 0
@@ -109,9 +115,10 @@ def test(request):
             data['general']['id']['value'] = name + "_3int"
             if numHard in ["1", "2", "3"]:
                 for h in range(1, int(numHard) + 1):
-                    hardName = request.POST.get('name'+str(h))
-                    data['nsd']['properties']['hardware'].append(hardName)
+                    hardName = request.POST.get('hard_name' + str(h))
+                    data['nsd']['properties']['hardware'].append(hardName)  # Append hardware name to the list
                     
+
         with open(f"orange/static/{response_file}", "w") as file:
             json.dump(data, file, indent=4)
         
@@ -127,3 +134,5 @@ def test(request):
         return response
     
     return render(request, "test.html")
+
+

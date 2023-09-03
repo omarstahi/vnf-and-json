@@ -12,16 +12,32 @@
 </head>
 
 <body>
-    <div class="page-wrapper bg-gra-02 p-t-130 p-b-100 font-poppins">
-        <div class="wrapper wrapper--w780">
-            <div class="card card-4">
-                <div class="card-body">
-                    <h2 class="title">NSD</h2>
+
+                    
                     <form method="POST">
                         {% csrf_token %}
-                        <div class="row row-space">
+                        <div class="page-wrapper bg-gra-02 p-t-130 p-b-100 font-poppins">
+                            <div class="wrapper wrapper--w780">
+                                <div class="card card-4">
+                                    <div class="card-body">
+                                        <div class="row row-space">
+                                            <div class="col-2">
+                                                <div class="input-group">
+                                                    <label for="with_vlan">with VLAN:</label>
+                                                    <input type="radio" id="with_vlan" name="vlan_option" value="with">
+                                                </div>
+                                            </div>
+                                            <div class="col-2">
+                                                <div class="input-group">
+                                                    <label for="without_vlan">without VLAN:</label>
+                                                    <input type="radio" id="without_vlan" name="vlan_option" value="without">
+                                                </div>
+                                            </div>
+                                        </div>
+                                                                <div class="row row-space">
                             <div class="col-2">
                                 <div class="input-group">
+                                    <h2 class="title">NSD</h2>
                                     <label for="nsdName">Name:</label>
                                     <input class="input--style-4" type="text" name="nsdName"><br><br>
                                     <label for="nsdVersion">Version:</label>
@@ -194,8 +210,8 @@
                         <div class="row row-space">
                             <div class="col-2">
                                 <div class="input-group">
-                                    <label for="name${i + 1}">name:</label>
-                                    <input class="input--style-4" type="text" name="name${i + 1}"><br><br>
+                                    <label for="hard_name${i + 1}">name:</label>
+                                    <input class="input--style-4" type="text" name="hard_name${i + 1}"><br><br>
                                 </div>
                             </div>
                         </div>
