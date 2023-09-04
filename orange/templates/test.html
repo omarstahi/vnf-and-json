@@ -13,38 +13,41 @@
 
 <body>
 
-                    
-                    <form method="POST">
-                        {% csrf_token %}
-                        <div class="page-wrapper bg-gra-02 p-t-130 p-b-100 font-poppins">
-                            <div class="wrapper wrapper--w780">
-                                <div class="card card-4">
-                                    <div class="card-body">
-                                        <div class="row row-space">
-                                            <div class="col-2">
-                                                <div class="input-group">
-                                                    <label for="with_vlan">with VLAN:</label>
-                                                    <input type="radio" id="with_vlan" name="vlan_option" value="with">
-                                                </div>
-                                            </div>
-                                            <div class="col-2">
-                                                <div class="input-group">
-                                                    <label for="without_vlan">without VLAN:</label>
-                                                    <input type="radio" id="without_vlan" name="vlan_option" value="without">
-                                                </div>
-                                            </div>
-                                        </div>
-                                                                <div class="row row-space">
+
+    <form method="POST">
+        {% csrf_token %}
+        <div class="page-wrapper bg-gra-02 p-t-130 p-b-100 font-poppins">
+            <div class="wrapper wrapper--w780">
+                <div class="card card-4">
+                    <div class="card-body">
+                        <div class="row row-space">
                             <div class="col-2">
                                 <div class="input-group">
-                                    <h2 class="title">NSD</h2>
-                                    <label for="nsdName">Name:</label>
-                                    <input class="input--style-4" type="text" name="nsdName"><br><br>
-                                    <label for="nsdVersion">Version:</label>
-                                    <input class="input--style-4" type="text" name="nsdVersion"><br><br>
-
+                                    <label for="with_vlan">with VLAN:</label>
+                                    <input type="radio" id="with_vlan" name="vlan_option" value="with">
                                 </div>
                             </div>
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <label for="without_vlan">without VLAN:</label>
+                                    <input type="radio" id="without_vlan" name="vlan_option" value="without">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row row-space">
+                            <h2 class="title">NSD</h2>
+                        </div>
+                        <div class="row row-space">
+                            <div class="col-6">
+                                <label for="nsdName">Name:</label>
+                                <input class="input--style-4" type="text" name="nsdName"><br><br>
+                            </div>
+                            <div class="col-6">
+                                <label for="nsdVersion">Version:</label>
+                                <input class="input--style-4" type="text" name="nsdVersion"><br><br>
+                            </div>
+                        </div>
+
                             <div class="col-2">
                                 <div class="input-group">
                                     <label for="nsdDescription">Description:</label>
@@ -53,11 +56,12 @@
                                 <label for="size">Choose type:</label>
                                 <div class="input-group">
                                     <select class="input--style-4" id="size" name="type">
-                                    <option value="volvo">Small</option>
-                                    <option value="saab">Medium</option>
-                                    <option value="opel">Big</option>
+                                        <option value="small">Small</option>
+                                        <option value="medium">Medium</option>
+                                        <option value="large">Large</option>
                                 </div>
                                 </select>
+                                
                             </div>
                         </div>
                         <div class="row row-space">
@@ -78,7 +82,8 @@
                                 <div class="input-group">
                                     <label for="num">Number of VNFs:</label>
                                     <input class="input--style-4" type="text" name="num" id="num"><br><br>
-                                    <button class="btn btn--radius-2 btn--blue" id="generateButton">Generate VNF</button>
+                                    <button class="btn btn--radius-2 btn--blue" id="generateButton">Generate
+                                        VNF</button>
                                 </div>
                             </div>
                         </div>
@@ -87,33 +92,33 @@
                             <!-- Generated subform fields will be added here -->
                         </div>
                         <input class="btn btn--radius-2 btn--blue" name="sub" type="submit" value="Submit">
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
-    <script src="{% static 'vendor/select2/select2.min.js' %}"></script>
-    <script src="{% static 'vendor/datepicker/moment.min.js' %}"></script>
-    <script src="{% static 'vendor/datepicker/daterangepicker.js' %}"></script>
-    <script src="{% static 'js/global.js' %}"></script>
+        <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+        <script src="{% static 'vendor/select2/select2.min.js' %}"></script>
+        <script src="{% static 'vendor/datepicker/moment.min.js' %}"></script>
+        <script src="{% static 'vendor/datepicker/daterangepicker.js' %}"></script>
+        <script src="{% static 'js/global.js' %}"></script>
 
-    <!-- ... (your HTML code) ... -->
+        <!-- ... (your HTML code) ... -->
 
-    <script>
-        $(document).ready(function () {
-            $("#generateButton").click(function (event) {
-                event.preventDefault(); // Prevent the default form submission
+        <script>
+            $(document).ready(function () {
+                $("#generateButton").click(function (event) {
+                    event.preventDefault(); // Prevent the default form submission
 
-                var num = parseInt($("#num").val());
-                var subformContainer = $("#subformContainer");
+                    var num = parseInt($("#num").val());
+                    var subformContainer = $("#subformContainer");
 
-                if (num > 4) {
-                    alert("vnf are limited to 4");
-                } else {
-                    subformContainer.empty();
-                    for (var i = 0; i < num; i++) {
-                        var subform = `
+                    if (num > 4) {
+                        alert("vnf are limited to 4");
+                    } else {
+                        subformContainer.empty();
+                        for (var i = 0; i < num; i++) {
+                            var subform = `
                     <h2 class="title">VNF ${i + 1}</h2>
 
 <div class="row row-space">
@@ -166,19 +171,19 @@
                         </div>
                     `;
 
-                        subformContainer.append(subform);
+                            subformContainer.append(subform);
+                        }
                     }
-                }
-            });
+                });
 
-            $(document).on("click", ".generateCloudButton", function (event) {
-                event.preventDefault();
-                var vnfIndex = $(this).data("index");
-                var numCloud = parseInt($(`#numCloud${vnfIndex}`).val());
-                var cloudContainer = $(`#cloudContainer${vnfIndex}`);
-                cloudContainer.empty();
-                for (var i = 0; i < numCloud; i++) {
-                    var cloudSubform = `
+                $(document).on("click", ".generateCloudButton", function (event) {
+                    event.preventDefault();
+                    var vnfIndex = $(this).data("index");
+                    var numCloud = parseInt($(`#numCloud${vnfIndex}`).val());
+                    var cloudContainer = $(`#cloudContainer${vnfIndex}`);
+                    cloudContainer.empty();
+                    for (var i = 0; i < numCloud; i++) {
+                        var cloudSubform = `
                     <h2 class="title">Cloud-init ${i + 1} for VNF ${vnfIndex + 1}</h2>
                     <div class="row row-space">
                         <div class="col-2">
@@ -195,24 +200,24 @@
                         </div>
                     </div>
                 `;
-                    cloudContainer.append(cloudSubform);
-                }
+                        cloudContainer.append(cloudSubform);
+                    }
+                });
+
             });
+            $("#generateHard").click(function (event) {
+                event.preventDefault(); // Prevent the default form submission
 
-        });
-        $("#generateHard").click(function (event) {
-            event.preventDefault(); // Prevent the default form submission
+                var num = parseInt($("#numHard").val());
+                var hardContainer = $("#hardContainer");
 
-            var num = parseInt($("#numHard").val());
-            var hardContainer = $("#hardContainer");
+                if (num > 3) {
+                    alert("Hardwares are limited to 3");
+                } else {
+                    hardContainer.empty();
+                    for (var i = 0; i < num; i++) {
 
-            if (num > 3) {
-                alert("Hardwares are limited to 3");
-            } else {
-                hardContainer.empty();
-                for (var i = 0; i < num; i++) {
-
-                    var subform = `
+                        var subform = `
                         <h2 class="title">Hardware ${i + 1}</h2>
                         <div class="row row-space">
                             <div class="col-2">
@@ -223,11 +228,11 @@
                             </div>
                         </div>
                         `;
-                    hardContainer.append(subform);
+                        hardContainer.append(subform);
+                    }
                 }
-            }
-        });
-    </script>
+            });
+        </script>
 
 </body>
 

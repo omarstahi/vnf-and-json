@@ -7,7 +7,7 @@ def test(request):
     num = request.POST.get('num')
     vlan_option = request.POST.get('vlan_option')  # Assuming you have a form input for this
     type = request.POST.get('type')
-    
+    msg = ""    
     if num in ['1', '2', '3', '4']:
         print(f"vlan_option: {vlan_option}")
 
@@ -121,12 +121,14 @@ def test(request):
                 for h in range(1, int(numHard) + 1):
                     hardName = request.POST.get('hard_name' + str(h))
                     data['nsd']['properties']['hardware'].append(hardName)  # Append hardware name to the list
-                    
-            if type == "small" and cpu_sum > 3 or memory_sum > 8:
+       
+            
+            if type == "small" and cpu_sum > 6 or memory_sum > 13:
+                #msg = "maximum cpu"
                 return HttpResponse("aaaaa")
-            elif type == "medium" and cpu_sum > 5 or memory_sum > 16:
+            elif type == "medium" and cpu_sum > 14 or memory_sum > 28.5:
                 return HttpResponse("aaaaa")
-            elif type == "big" and cpu_sum > 8 or memory_sum > 32:
+            elif type == "large" and cpu_sum > 21 or memory_sum > 60:
                 return HttpResponse("aaaaa")
         with open(f"orange/static/{response_file}", "w") as file:
             json.dump(data, file, indent=4)
