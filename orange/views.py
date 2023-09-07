@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 import json
 import os
+import requests
 
 def test(request):
     num = request.POST.get('num')
@@ -9,8 +10,7 @@ def test(request):
     type = request.POST.get('type')
     msg = ""    
     if num in ['1', '2', '3', '4']:
-        print(f"vlan_option: {vlan_option}")
-
+        
         if vlan_option == 'with':
             json_filename = f"with_vlan/nsd_{num}vnf.json"
         else:
@@ -20,7 +20,7 @@ def test(request):
         # Handle other cases or raise an error
         json_filename = None
     
-    if request.method == 'POST' and 'sub' in request.POST and json_filename:
+    if request.method == 'POST' and 'export' or 'applyDS' in request.POST and json_filename:
         version = request.POST.get('version')
         name = request.POST.get('nsdName')
         nsdversion = request.POST.get('nsdVersion')
@@ -71,6 +71,8 @@ def test(request):
                     
                     #collect Cloud-init paths and Cloud-init contents
                     
+                    # add bus for customazition with prefix "bus-type-"
+
                     cloud_init_paths = []
                     cloud_init_contents = []
                     index = request.POST.get('numCloud'+str(inp))
@@ -120,30 +122,85 @@ def test(request):
             if numHard in ["1", "2", "3"]:
                 for h in range(1, int(numHard) + 1):
                     hardName = request.POST.get('hard_name' + str(h))
-                    data['nsd']['properties']['hardware'].append(hardName)  # Append hardware name to the list
+                    data['nsd']['properties']['hardware'].append(hardName)
        
+            print("TYPE = " + type)
+            print("CPU = " + str(cpu_sum))
+            print("MEMORY = " + str(memory_sum))
+            print((type == "large" and (cpu_sum > 21 or memory_sum > 60)))
+
+            if type == "small" and (cpu_sum > 6 or memory_sum > 13):
+                msg = "maximum cpu is 6 and maximum memory is 13 Gib"
+
+            elif type == "medium" and (cpu_sum > 14 or memory_sum > 28.5):
+                msg = "maximum cpu is 14 and maximum memory is 28.5 Gib"
+
+            elif type == "large" and (cpu_sum > 21 or memory_sum > 60):
+                msg = "maximum cpu is 21 and maximum memory is 60 Gib"
             
-            if type == "small" and cpu_sum > 6 or memory_sum > 13:
-                #msg = "maximum cpu"
-                return HttpResponse("aaaaa")
-            elif type == "medium" and cpu_sum > 14 or memory_sum > 28.5:
-                return HttpResponse("aaaaa")
-            elif type == "large" and cpu_sum > 21 or memory_sum > 60:
-                return HttpResponse("aaaaa")
-        with open(f"orange/static/{response_file}", "w") as file:
-            json.dump(data, file, indent=4)
+            print("ERROR : " + msg)
         
-        response = HttpResponse(content_type="application/octet-stream")
-        response['Content-Disposition'] = f'attachment; filename={response_file}'
+        if msg == "" and 'export' in request.POST:
+            response = download(response_file, data)
+            # remove temp file
+            os.remove(f"orange/static/{response_file}")
+            return response
         
-        with open(f"orange/static/{response_file}", "rb") as f:
-            response.write(f.read())
-        
-        #remove temp file
-        os.remove(f"orange/static/{response_file}")
-        
-        return response
+        elif 'applyDS' in request.POST:
+            # Login
+            headers = {
+                'Content-Type': 'application/json'
+            }
+
+            login_data = json.dumps({
+                "username": "admin",
+                "password": "Admin@0M"
+            })
+
+            login_response = callApi(
+                    method="POST", 
+                    url="/login", 
+                    headers=headers, 
+                    data=login_data
+            )
+
+            if login_response.status_code != 200:
+                message = "bla bla"
+            else:
+                create_nsd_response = callApi(
+                        method = "POST",
+                        url = "/nsds",
+                        headers = headers,
+                        data = data
+                )
+
+                publish_nsd = callApi(
+                        method = 'PUT',
+                        
+                )
+                    
+
     
-    return render(request, "test.html")
+    return render(request, "test.html", {"msg" : msg})
 
 
+def callApi(method, url, headers, data):
+    # general call api
+    base_url = "https://10.253.56.134/rest/json/v1"
+    response = requests.request(
+                    method=method, 
+                    url=base_url + url,
+                    headers=headers,
+                    data=data)
+    return response
+
+def download(response_file, data):
+    with open(f"orange/static/{response_file}", "w") as file:
+                json.dump(data, file, indent=4)
+
+    response = HttpResponse(content_type="application/octet-stream")
+    response['Content-Disposition'] = f'attachment; filename={response_file}'
+    
+    with open(f"orange/static/{response_file}", "rb") as f:
+        response.write(f.read())
+    return response
