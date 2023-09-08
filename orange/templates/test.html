@@ -52,20 +52,20 @@
             </select>
         </div>
 
-        <!--<div class="col-md-6">-->
-            <div class="form-check col-md-3">
+        <div class="col-md-6">
+            <div class="form-check">
                 <input class="form-check-input" type="radio" name="vlan_option" id="exampleRadios1" value="with">
                 <label class="form-check-label" for="with_vlan">
                     with VLAN
                 </label>
             </div>
-            <div class="form-check col-md-3">
+            <div class="form-check">
                 <input class="form-check-input" type="radio" name="vlan_option" id="exampleRadios2" value="without" checked>
                 <label class="form-check-label" for="whitout_vlan">
                     whitout VLAN
                 </label>
             </div>
-        <!--</div>-->
+        </div>
 
 
         <!-- END :  NSD GENERAL INFO -->
@@ -77,7 +77,7 @@
             <input type="text" class="form-control" id="numHard" name="numHard">
             <button type="button" class="btn btn-primary" id="generateHard">Generate Hardware</button>
         </div>
-        <div id="hardContainer">
+        <div id="hardContainer" class="row">
 
         </div>
         <!-- END : HARDWARE -->
@@ -91,7 +91,7 @@
         </div>
 
 
-        <div id="subformContainer"> 
+        <div id="subformContainer" class="row"> 
         </div>
         <!-- END : VNF INFO -->
 
@@ -208,14 +208,12 @@
             } else {
                 hardContainer.empty();
                 for (var i = 0; i < num; i++) {
-
                     var subform = `
                     <h2 class="title">Hardware ${i + 1}</h2>
                     <div class="col-md-6">
                         <label for="hard_name${i + 1}" class="form-label">Name</label>
                         <input type="text" class="form-control" name="hard_name${i + 1}">
                     </div>    
-                    
                     `;
                     hardContainer.append(subform);
                 }
@@ -226,55 +224,3 @@
 </body>
 
 </html>
-
-
-
-
-<!--              <h2 class="title">VNF ${i + 1}</h2>
-
-<div class="row row-space">
-<div class="col-6">
-    <div class="input-group">
-    <div class="subform">
-        <div class="col-md-6">
-            <label for="subform-field-${i}" class="form-label">VNF name</label>
-            <input type="text" class="form-control" name="name${i}">
-        </div>
-</div>
-<div class="subform">
-    <div class="col-md-6">
-            <label for="subform-field-${i}" class="form-label">persistence-id</label>
-            <input type="text" class="form-control" name="persistence-id${i}">
-    </div>
-</div>
-<div class="subform">
-    <div class="col-md-6">
-            <label for="subform-field-${i}" class="form-label">Location:</label>
-            <input type="text" class="form-control" name="persistence-id${i}">
-    </div>
-</div>
-</div>
-</div>
-<div class="col-6">
-<div class="subform">
-    <div class="col-md-6">
-            <label for="subform-field-${i}" class="form-label">Memory (GiB)</label>
-            <input type="text" class="form-control" name="memory${i}">
-    </div>
-</div>
-<div class="subform">
-    <div class="col-md-6">
-            <label for="subform-field-${i}" class="form-label">CPUSs</label>
-            <input type="text" class="form-control" name="cpu${i}">
-    </div>
-</div>
-<div class="subform">
-    <div class="col-md-6">
-            <label for="subform-field-${i}" class="form-label">Bus</label>
-            <input type="text" class="form-control" name="bus${i}">
-    </div>
-</div>
-</div>
-</div>-->
-
-
