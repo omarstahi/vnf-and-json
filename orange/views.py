@@ -6,9 +6,10 @@ import requests
 
 def test(request):
     num = request.POST.get('num')
-    vlan_option = request.POST.get('vlan_option')  # Assuming you have a form input for this
+    vlan_option = request.POST.get('vlan_option')
     type = request.POST.get('type')
-    msg = ""    
+    msg = ""
+    message = ""    
     if num in ['1', '2', '3', '4']:
         
         if vlan_option == 'with':
@@ -21,7 +22,6 @@ def test(request):
         json_filename = None
     
     if request.method == 'POST' and 'export' or 'applyDS' in request.POST and json_filename:
-        version = request.POST.get('version')
         name = request.POST.get('nsdName')
         nsdversion = request.POST.get('nsdVersion')
         nsddesc = request.POST.get('nsdDescription')
@@ -114,9 +114,8 @@ def test(request):
                     i+=1
                 elif num == 0:
                     break
-            data['version'] = version
             data['nsd']['properties']['name'] = name
-            data['nsd']['version'] = nsdversion
+            data['nsd']['properties']['version'] = nsdversion
             data['nsd']['properties']['description'] = nsddesc
             data['general']['id']['value'] = name + "_3int"
             if numHard in ["1", "2", "3"]:
@@ -124,11 +123,6 @@ def test(request):
                     hardName = request.POST.get('hard_name' + str(h))
                     data['nsd']['properties']['hardware'].append(hardName)
        
-            print("TYPE = " + type)
-            print("CPU = " + str(cpu_sum))
-            print("MEMORY = " + str(memory_sum))
-            print((type == "large" and (cpu_sum > 21 or memory_sum > 60)))
-
             if type == "small" and (cpu_sum > 6 or memory_sum > 13):
                 msg = "maximum cpu is 6 and maximum memory is 13 Gib"
 
@@ -138,7 +132,6 @@ def test(request):
             elif type == "large" and (cpu_sum > 21 or memory_sum > 60):
                 msg = "maximum cpu is 21 and maximum memory is 60 Gib"
             
-            print("ERROR : " + msg)
         
         if msg == "" and 'export' in request.POST:
             response = download(response_file, data)
@@ -146,7 +139,7 @@ def test(request):
             os.remove(f"orange/static/{response_file}")
             return response
         
-        elif 'applyDS' in request.POST:
+        elif 'apply_DS' in request.POST:
             # Login
             headers = {
                 'Content-Type': 'application/json'
@@ -165,33 +158,62 @@ def test(request):
             )
 
             if login_response.status_code != 200:
-                message = "bla bla"
+                message = "login failed"
+                print("Error : "+message)
             else:
+                print("login success")
+                #create NSD
+                cookie = "om_eb_user_login=" + login_response.cookies.get_dict()['om_eb_user_login']
+                headers['Cookie'] = cookie
+
                 create_nsd_response = callApi(
                         method = "POST",
                         url = "/nsds",
                         headers = headers,
-                        data = data
+                        data = json.dumps(data)
                 )
 
-                publish_nsd = callApi(
-                        method = 'PUT',
-                        
+                print(data)
+
+                print(create_nsd_response.status_code)
+                print(create_nsd_response.json())
+
+                if create_nsd_response.status_code != 201:
+                    message = "NSD creation failed"
+                    print("Error : "+message)
+                else:
+                    print("nsd creation done")
+                    #publish NSD
+
+                    publish_nsd_response = callApi(
+                    method = "PUT",
+                    url = "/nsds/" + str(create_nsd_response.json()['id']) + "/status",
+                    headers = headers,
+                    data = json.dumps("release")
                 )
+                    if publish_nsd_response.status_code != 201:
+                        message = "NSD publishing failed."
+                        print("Error : "+message)
+                    else:
+                        message = "NSD published successfully."
+                        print("Error : "+message)
+
                     
 
     
-    return render(request, "test.html", {"msg" : msg})
+    return render(request, "test.html", {"msg" : msg, "apimessage" : message})
 
 
 def callApi(method, url, headers, data):
     # general call api
     base_url = "https://10.253.56.134/rest/json/v1"
     response = requests.request(
-                    method=method, 
-                    url=base_url + url,
-                    headers=headers,
-                    data=data)
+                    method = method, 
+                    url = base_url + url,
+                    headers = headers,
+                    data = data,
+                    verify = False
+                    )
     return response
 
 def download(response_file, data):
@@ -204,3 +226,11 @@ def download(response_file, data):
     with open(f"orange/static/{response_file}", "rb") as f:
         response.write(f.read())
     return response
+
+
+
+
+
+
+
+#ces configuration de vlan sont dédié uniquement pour lab archive
