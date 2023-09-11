@@ -3,7 +3,7 @@
     "nsd": {
         "version": 4,
         "properties": {
-            "name": "vnf_withVlan12",
+            "name": "vnf_withoutVlan12",
             "version": "1",
             "description": "",
             "software": [
@@ -174,11 +174,27 @@
                     {
                         "link": {
                             "value": "link_vnf1_0"
+                        },
+                        "vlan-mode": {
+                            "value": "vlan-mode-access",
+                            "nsd": "2"
+                        },
+                        "tag": {
+                            "value": "4006",
+                            "nsd": "2"
                         }
                     },
                     {
                         "link": {
                             "value": "link_vnf1_1"
+                        },
+                        "vlan-mode": {
+                            "value": "vlan-mode-access",
+                            "nsd": "2"
+                        },
+                        "tag": {
+                            "value": "4008",
+                            "nsd": "2"
                         }
                     }
                 ]

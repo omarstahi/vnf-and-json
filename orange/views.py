@@ -9,7 +9,7 @@ def test(request):
     vlan_option = request.POST.get('vlan_option')
     type = request.POST.get('type')
     msg = ""
-    message = ""    
+    message = ""
     if num in ['1', '2', '3', '4']:
         
         if vlan_option == 'with':
@@ -159,9 +159,7 @@ def test(request):
 
             if login_response.status_code != 200:
                 message = "login failed"
-                print("Error : "+message)
             else:
-                print("login success")
                 #create NSD
                 cookie = "om_eb_user_login=" + login_response.cookies.get_dict()['om_eb_user_login']
                 headers['Cookie'] = cookie
@@ -173,18 +171,12 @@ def test(request):
                         data = json.dumps(data)
                 )
 
-                print(data)
-
-                print(create_nsd_response.status_code)
-                print(create_nsd_response.json())
-
+            
+            
                 if create_nsd_response.status_code != 201:
                     message = "NSD creation failed"
-                    print("Error : "+message)
                 else:
-                    print("nsd creation done")
                     #publish NSD
-
                     publish_nsd_response = callApi(
                     method = "PUT",
                     url = "/nsds/" + str(create_nsd_response.json()['id']) + "/status",
@@ -193,13 +185,9 @@ def test(request):
                 )
                     if publish_nsd_response.status_code != 201:
                         message = "NSD publishing failed."
-                        print("Error : "+message)
                     else:
                         message = "NSD published successfully."
-                        print("Error : "+message)
-
                     
-
     
     return render(request, "test.html", {"msg" : msg, "apimessage" : message})
 

@@ -23,7 +23,23 @@
             </a>
         </div>
     </nav>
+    {% if apimessage and apimessage != "NSD published successfully." %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>{{apimessage}}</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% elif apimessage and apimessage == "NSD published successfully." %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert" style="background-color: rgb(127, 238, 201);">
+        <strong>{{apimessage}}</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endif %}
     
+    {% if msg %}
+    <div class="alert alert-danger" role="alert">
+        {{msg}}
+      </div>
+    {% endif %}
     <form class="form-test row g-3 ml-4" method="POST">
         {% csrf_token %}
 

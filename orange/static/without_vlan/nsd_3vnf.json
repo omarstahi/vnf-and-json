@@ -3,7 +3,7 @@
     "nsd": {
         "version": 4,
         "properties": {
-            "name": "vnf3_withoutVlan12",
+            "name": "vnf3_withVlan12",
             "version": "1",
             "description": "",
             "software": [
@@ -174,79 +174,31 @@
                     {
                         "link": {
                             "value": "link_vnf1_0"
-                        },
-                        "vlan-mode": {
-                            "value": "vlan-mode-access",
-                            "nsd": "2"
-                        },
-                        "tag": {
-                            "value": "4006",
-                            "nsd": "2"
                         }
                     },
                     {
                         "link": {
                             "value": "link_vnf1_1"
-                        },
-                        "vlan-mode": {
-                            "value": "vlan-mode-access",
-                            "nsd": "2"
-                        },
-                        "tag": {
-                            "value": "4008",
-                            "nsd": "2"
                         }
                     },
                     {
                         "link": {
                             "value": "link_vnf2_0"
-                        },
-                        "vlan-mode": {
-                            "value": "vlan-mode-access",
-                            "nsd": "2"
-                        },
-                        "tag": {
-                            "value": "4006",
-                            "nsd": "2"
                         }
                     },
                     {
                         "link": {
                             "value": "link_vnf2_1"
-                        },
-                        "vlan-mode": {
-                            "value": "vlan-mode-access",
-                            "nsd": "2"
-                        },
-                        "tag": {
-                            "value": "4008",
-                            "nsd": "2"
                         }
                     },
                     {
                         "link": {
                             "value": "link_vnf3_0"
-                        },
-                        "vlan-mode": {
-                            "value": "vlan-mode-access",
-                            "nsd": "2"
-                        },
-                        "tag": {
-                            "value": "4006",
-                            "nsd": "2"
                         }
                     },
                     {
                         "link": {
                             "value": "link_vnf3_1"
-                        },
-                        "vlan-mode": {
-                            "value": "vlan-mode-access",
-                            "nsd": "2"
-                        },
-                        "tag": {
-                            "value": "4008",
-                            "nsd": "2"
                         }
                     }
                 ]
