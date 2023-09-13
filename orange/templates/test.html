@@ -24,12 +24,12 @@
         </div>
     </nav>
     {% if apimessage and apimessage != "NSD published successfully." %}
-    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <div class="form-test alert alert-danger alert-dismissible fade show" role="alert">
         <strong>{{apimessage}}</strong>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
     {% elif apimessage and apimessage == "NSD published successfully." %}
-    <div class="alert alert-warning alert-dismissible fade show" role="alert" style="background-color: rgb(127, 238, 201);">
+    <div class="form-test alert alert-success alert-dismissible fade show" role="alert">
         <strong>{{apimessage}}</strong>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
@@ -48,11 +48,11 @@
         <h1>NSD</h1>
         <hr class="hr-space">
         <div class="col-md-6">
-            <label for="nsdName" class="form-label">Name</label>
+            <label for="nsdName" class="form-label">Name<span style="color: #ff7900;">*</span></label>
             <input type="text" class="form-control" name="nsdName" id="inputEmail4">
         </div>
         <div class="col-md-6">
-            <label for="nsdVersion" class="form-label">Version</label>
+            <label for="nsdVersion" class="form-label">Version<span style="color: #ff7900;">*</span></label>
             <input type="text" class="form-control" name="nsdVersion" id="inputPassword4">
         </div>
         <div class="col-12">
@@ -60,7 +60,7 @@
             <input type="text" class="form-control" id="inputAddress" name="nsdDescription">
         </div>
         <div class="col-md-6">
-            <label for="size" class="form-label">Choose type</label>
+            <label for="size" class="form-label">Choose type<span style="color: #ff7900;">*</span></label>
             <select id="size" class="form-select" name="type">
                 <option value="small">Small (max memory = 13 Gib max cpu = 6)</option>
                 <option value="medium">Medium (max memory = 28.5 Gib max cpu = 14)</option>
@@ -87,31 +87,23 @@
         <!-- END :  NSD GENERAL INFO -->
 
 
-        <!-- START : HARDWARE -->
-        <div class="col-md-6">
-            <label for="numHard" class="form-label">Number of hardwares</label>
-            <input type="text" class="form-control" id="numHard" name="numHard">
-            <button type="button" class="btn btn-primary" id="generateHard">Generate Hardware</button>
-        </div>
-        <div id="hardContainer" class="row">
-
-        </div>
-        <!-- END : HARDWARE -->
-
         <!-- START : VNF INFO -->
-
+        <h1>VNFs</h1>
+        <hr class="hr-space">
         <div class="col-md-6">
-            <label for="num" class="form-label">Number of VNFs</label>
-            <input class="form-control" type="text" name="num" id="num">
+            <label for="num" class="form-label">Number of VNFs<span style="color: #ff7900;">*</span></label>
+            <input class="form-control" type="text" name="num" id="num"><br>
             <button class="btn btn-primary" id="generateButton">Generate VNF</button>
         </div>
-
+        <br>
 
         <div id="subformContainer" class="row"> 
         </div>
         <!-- END : VNF INFO -->
 
-        <br><br>
+        <br>
+        <hr>
+        
         <div class="col-6">
             <button name="export" value="export" type="submit" class="btn btn-danger btn-lg">Export</button>
         </div>
@@ -141,33 +133,33 @@
                     for (var i = 0; i < num; i++) {
                         var subform = `
     
-<h2 class="title">VNF ${i + 1}</h2>
+<h2 class="title mt-2">VNF ${i + 1}</h2>
 
 
     <div class="subform col-md-6">
-        <label for="subform-field-${i}">VNF name:</label>
+        <label for="subform-field-${i}">VNF name<span style="color: #ff7900;">*</span></label>
         <input class="form-control" type="text" name="name${i}"><br><br>
     </div>
     <div class="subform col-md-6">
-        <label for="subform-field-${i}">persistence-id:</label>
+        <label for="subform-field-${i}">persistence-id<span style="color: #ff7900;">*</span></label>
         <input class="form-control" type="text" name="persistence-id${i}"><br><br>
     </div>
     <div class="subform col-md-6">
-        <label for="subform-field-${i}">Location:</label>
+        <label for="subform-field-${i}">Location<span style="color: #ff7900;">*</span></label>
         <input class="form-control" type="text" name="location${i}"><br><br>
     </div>
 
 
     <div class="subform col-md-6">
-        <label for="subform-field-${i}">Memory (GiB):</label>
+        <label for="subform-field-${i}">Memory (GiB)<span style="color: #ff7900;">*</span></label>
         <input class="form-control" type="text" name="memory${i}"><br><br>
     </div>
     <div class="subform col-md-6">
-        <label for="subform-field-${i}">CPUs:</label>
+        <label for="subform-field-${i}">CPUs<span style="color: #ff7900;">*</span></label>
         <input class="form-control" type="text" name="cpu${i}"><br><br>
     </div>
     <div class="subform col-md-6">
-        <label for="subform-field-${i}">Bus:</label>
+        <label for="subform-field-${i}">Bus<span style="color: #ff7900;">*</span></label>
         <select class="form-select" name="bus${i}">
             <option value="virtio">Virtio</option>
             <option value="sata">Sata</option>
@@ -179,7 +171,7 @@
                     <h2 class="title">Cloud-init Details</h2>
                             <div class="col-6">
                                     <label for="numCloud${i}">Number of Cloud-init</label>
-                                    <input class="form-control" type="text" name="numCloud${i}" id="numCloud${i}">
+                                    <input class="form-control" type="text" name="numCloud${i}" id="numCloud${i}"><br>
                                     <button class="btn btn-primary generateCloudButton" data-index="${i}">Generate Cloud Init</button>
                             </div>
                         </div>
@@ -217,28 +209,6 @@
                 }
             });
 
-        });
-        $("#generateHard").click(function (event) {
-            event.preventDefault(); // Prevent the default form submission
-
-            var num = parseInt($("#numHard").val());
-            var hardContainer = $("#hardContainer");
-
-            if (num > 3) {
-                alert("Hardwares are limited to 3");
-            } else {
-                hardContainer.empty();
-                for (var i = 0; i < num; i++) {
-                    var subform = `
-                    <h2 class="title">Hardware ${i + 1}</h2>
-                    <div class="col-md-6">
-                        <label for="hard_name${i + 1}" class="form-label">Name</label>
-                        <input type="text" class="form-control" name="hard_name${i + 1}">
-                    </div>    
-                    `;
-                    hardContainer.append(subform);
-                }
-            }
         });
     </script>
 
