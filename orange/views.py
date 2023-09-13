@@ -124,13 +124,13 @@ def test(request):
                     data['nsd']['properties']['hardware'].append(hardName)
        
             if type == "small" and (cpu_sum > 6 or memory_sum > 13):
-                msg = "maximum cpu is 6 and maximum memory is 13 Gib"
+                msg = "The maximum resource limit has been exceeded"
 
             elif type == "medium" and (cpu_sum > 14 or memory_sum > 28.5):
-                msg = "maximum cpu is 14 and maximum memory is 28.5 Gib"
+                msg = "The maximum resource limit has been exceeded"
 
             elif type == "large" and (cpu_sum > 21 or memory_sum > 60):
-                msg = "maximum cpu is 21 and maximum memory is 60 Gib"
+                msg = "The maximum resource limit has been exceeded"
             
         
         if msg == "" and 'export' in request.POST:

@@ -59,13 +59,12 @@
             <label for="nsdDescription" class="form-label">Description</label>
             <input type="text" class="form-control" id="inputAddress" name="nsdDescription">
         </div>
-
         <div class="col-md-6">
             <label for="size" class="form-label">Choose type</label>
             <select id="size" class="form-select" name="type">
-                <option value="small">Small</option>
-                <option value="medium">Medium</option>
-                <option value="large">Large</option>
+                <option value="small">Small (max memory = 13 Gib max cpu = 6)</option>
+                <option value="medium">Medium (max memory = 28.5 Gib max cpu = 14)</option>
+                <option value="large">Large (max memory = 60 Gib max cpu = 21)</option>
             </select>
         </div>
 
@@ -119,7 +118,7 @@
 
         <div class="col-6">
             <button name="apply_DS" type="submit" value="apply to DS" class="btn btn-success btn-lg">Apply to
-                DS</button>
+                MANO</button>
         </div>
 
     </form>
@@ -169,7 +168,12 @@
     </div>
     <div class="subform col-md-6">
         <label for="subform-field-${i}">Bus:</label>
-        <input class="form-control" type="text" name="bus${i}"><br><br>
+        <select class="form-select" name="bus${i}">
+            <option value="virtio">Virtio</option>
+            <option value="sata">Sata</option>
+            <option value="scsi">Scsi</option>
+            <option value="ide">Ide</option>
+        </select>
     </div>
 
                     <h2 class="title">Cloud-init Details</h2>
