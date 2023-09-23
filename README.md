@@ -1,2 +1,2 @@
 # vnf-and-json
-Updating json data based on a form concerning nsd and vnf
+Web application developed using Django to create and generate and validate Network Service Descriptor
